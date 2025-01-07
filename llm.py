@@ -54,7 +54,7 @@ print(results)
 # --- LangChain Query Generation ---
 
 # Make sure to replace 'YOUR_HUGGINGFACE_API_KEY' with your actual API key
-huggingface_api_key = "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"  # Replace with your Hugging Face API key
+huggingface_api_key = "YOUR HUGGING FACE ID"  # Replace with your Hugging Face API key
 
 # Initialize T5 model from HuggingFaceHub
 model_name = "google/flan-t5-large"  # Use FLAN-T5 small model (you can use base or large for better performance)
