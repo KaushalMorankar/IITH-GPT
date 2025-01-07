@@ -1,5 +1,17 @@
 [
     {
+        "title": "QUICK LINKS",
+        "content": [
+            "About",
+            "Message from Director",
+            "About the IITH logo",
+            "Vision and Mission",
+            "Board of Governors",
+            "Senate",
+            "How to Reach"
+        ]
+    },
+    {
         "title": "About IITH",
         "content": [
             "Indian Institute of Technology Hyderabad (IITH) is a premier institute of science and technology established in 2008. IITH has been consistently ranked in the top 10 institutes in India for Engineering according to NIRF making it one of the most coveted schools for science and technology in the country.",
@@ -47,31 +59,74 @@
     },
     {
         "title": "Board of Governors",
+        "content": []
+    },
+    {
+        "title": "Shri. B. V. R. Mohan Reddy",
         "content": [
-            "Shri. B. V. R. Mohan Reddy",
             "Chairman",
-            "(Founder and Executive Chairman, Cyient Limited)",
-            "Smt. Saumya Gupta, IAS",
+            "(Founder and Executive Chairman, Cyient Limited)"
+        ]
+    },
+    {
+        "title": "Smt. Saumya Gupta, IAS",
+        "content": [
             "Member-Central Govt. nominee",
-            "(Joint Secretary to GoI, Dept. of Higher Education, Ministry of Education)",
-            "Shri Burra Venkatesham, IAS",
+            "(Joint Secretary to GoI, Dept. of Higher Education, Ministry of Education)"
+        ]
+    },
+    {
+        "title": "Shri Burra Venkatesham, IAS",
+        "content": [
             "Member-State Govt. nominee",
-            "(Secretary to Govt. of Telangana)",
-            "Prof. (Mrs.) Vinod Krishan",
+            "(Secretary to Govt. of Telangana)"
+        ]
+    },
+    {
+        "title": "Prof. (Mrs.) Vinod Krishan",
+        "content": [
             "Member",
-            "(Senior Professor & Dean, Indian Institute of Astrophysics (GoI))",
-            "Dr. Prema Ramachandran",
-            "(Director, Nutrition Foundation of India)",
-            "Prof. M Lakshmi Kantam",
-            "(Professor, Institute of Chemical Technology, Mumbai)",
-            "Prof. T Shashidhar",
+            "(Senior Professor & Dean, Indian Institute of Astrophysics (GoI))"
+        ]
+    },
+    {
+        "title": "Dr. Prema Ramachandran",
+        "content": [
+            "Member",
+            "(Director, Nutrition Foundation of India)"
+        ]
+    },
+    {
+        "title": "Prof. M Lakshmi Kantam",
+        "content": [
+            "Member",
+            "(Professor, Institute of Chemical Technology, Mumbai)"
+        ]
+    },
+    {
+        "title": "Prof. T Shashidhar",
+        "content": [
             "Member, Senate Nominee",
-            "(Professor, IITH, Kandi, Telangana)",
-            "Prof. J Balasubramaniam",
-            "Prof. B. S. Murty",
+            "(Professor, IITH, Kandi, Telangana)"
+        ]
+    },
+    {
+        "title": "Prof. J Balasubramaniam",
+        "content": [
+            "Member, Senate Nominee",
+            "(Professor, IITH, Kandi, Telangana)"
+        ]
+    },
+    {
+        "title": "Prof. B. S. Murty",
+        "content": [
             "(Ex-Officio) Member",
-            "(Director, IITH, Kandi, Telangana)",
-            "Shri V Venkat Rao",
+            "(Director, IITH, Kandi, Telangana)"
+        ]
+    },
+    {
+        "title": "Shri V Venkat Rao",
+        "content": [
             "Secretary",
             "(Registrar and Member Secretary, IITH, Kandi, Telangana)"
         ]
