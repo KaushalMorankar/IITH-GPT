@@ -1,0 +1,128 @@
+[
+    {
+        "json_file": "about-iith.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\about-iith_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\about-iith_metadata.json",
+        "num_sentences": 136
+    },
+    {
+        "json_file": "about-ocs.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\about-ocs_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\about-ocs_metadata.json",
+        "num_sentences": 22
+    },
+    {
+        "json_file": "achievements.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\achievements_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\achievements_metadata.json",
+        "num_sentences": 49
+    },
+    {
+        "json_file": "admissions.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\admissions_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\admissions_metadata.json",
+        "num_sentences": 62
+    },
+    {
+        "json_file": "departments.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\departments_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\departments_metadata.json",
+        "num_sentences": 24
+    },
+    {
+        "json_file": "extracurriculars.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\extracurriculars_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\extracurriculars_metadata.json",
+        "num_sentences": 101
+    },
+    {
+        "json_file": "japan-day.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\japan-day_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\japan-day_metadata.json",
+        "num_sentences": 19
+    },
+    {
+        "json_file": "kir-contact.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\kir-contact_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\kir-contact_metadata.json",
+        "num_sentences": 5
+    },
+    {
+        "json_file": "kir-editorial-team.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\kir-editorial-team_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\kir-editorial-team_metadata.json",
+        "num_sentences": 51
+    },
+    {
+        "json_file": "kir-issues.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\kir-issues_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\kir-issues_metadata.json",
+        "num_sentences": 137
+    },
+    {
+        "json_file": "kir-newsletter.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\kir-newsletter_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\kir-newsletter_metadata.json",
+        "num_sentences": 86
+    },
+    {
+        "json_file": "kir-submission.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\kir-submission_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\kir-submission_metadata.json",
+        "num_sentences": 6
+    },
+    {
+        "json_file": "ocs-home.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\ocs-home_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\ocs-home_metadata.json",
+        "num_sentences": 96
+    },
+    {
+        "json_file": "ocs-team.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\ocs-team_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\ocs-team_metadata.json",
+        "num_sentences": 35
+    },
+    {
+        "json_file": "placement-and-internship-brochures.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\placement-and-internship-brochures_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\placement-and-internship-brochures_metadata.json",
+        "num_sentences": 32
+    },
+    {
+        "json_file": "placement-day.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\placement-day_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\placement-day_metadata.json",
+        "num_sentences": 5
+    },
+    {
+        "json_file": "press-releases.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\press-releases_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\press-releases_metadata.json",
+        "num_sentences": 264
+    },
+    {
+        "json_file": "programs.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\programs_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\programs_metadata.json",
+        "num_sentences": 30
+    },
+    {
+        "json_file": "research-and-development.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\research-and-development_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\research-and-development_metadata.json",
+        "num_sentences": 50
+    },
+    {
+        "json_file": "stay-near-iith.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\stay-near-iith_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\stay-near-iith_metadata.json",
+        "num_sentences": 29
+    },
+    {
+        "json_file": "sustainability.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\sustainability_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\sustainability_metadata.json",
+        "num_sentences": 148
+    }
+]
