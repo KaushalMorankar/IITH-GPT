@@ -3,13 +3,19 @@
         "json_file": "about-iith.json",
         "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\about-iith_embeddings.index",
         "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\about-iith_metadata.json",
-        "num_sentences": 136
+        "num_sentences": 137
+    },
+    {
+        "json_file": "about-nss.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\about-nss_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\about-nss_metadata.json",
+        "num_sentences": 34
     },
     {
         "json_file": "about-ocs.json",
         "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\about-ocs_embeddings.index",
         "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\about-ocs_metadata.json",
-        "num_sentences": 22
+        "num_sentences": 21
     },
     {
         "json_file": "achievements.json",
@@ -24,6 +30,12 @@
         "num_sentences": 62
     },
     {
+        "json_file": "cce-home.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\cce-home_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\cce-home_metadata.json",
+        "num_sentences": 114
+    },
+    {
         "json_file": "departments.json",
         "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\departments_embeddings.index",
         "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\departments_metadata.json",
@@ -34,6 +46,18 @@
         "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\extracurriculars_embeddings.index",
         "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\extracurriculars_metadata.json",
         "num_sentences": 101
+    },
+    {
+        "json_file": "faculty.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\faculty_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\faculty_metadata.json",
+        "num_sentences": 2070
+    },
+    {
+        "json_file": "important-links.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\important-links_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\important-links_metadata.json",
+        "num_sentences": 22
     },
     {
         "json_file": "japan-day.json",
@@ -72,6 +96,18 @@
         "num_sentences": 6
     },
     {
+        "json_file": "nss-faqs.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\nss-faqs_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\nss-faqs_metadata.json",
+        "num_sentences": 71
+    },
+    {
+        "json_file": "nss-team.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\nss-team_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\nss-team_metadata.json",
+        "num_sentences": 33
+    },
+    {
         "json_file": "ocs-home.json",
         "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\ocs-home_embeddings.index",
         "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\ocs-home_metadata.json",
@@ -82,6 +118,12 @@
         "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\ocs-team_embeddings.index",
         "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\ocs-team_metadata.json",
         "num_sentences": 35
+    },
+    {
+        "json_file": "open-to-all-teaching.json",
+        "index_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\open-to-all-teaching_embeddings.index",
+        "metadata_file": "D:\\pytorch_projects+tensorflow_projects_3.12\\IITH_GPT\\IITH-GPT\\output\\open-to-all-teaching_metadata.json",
+        "num_sentences": 144
     },
     {
         "json_file": "placement-and-internship-brochures.json",

@@ -111,9 +111,9 @@ def generate_response_with_langchain(documents, query_text, api_key):
 def main_pipeline():
     # Configurations
     index_tracker_file = r"D:\pytorch_projects+tensorflow_projects_3.12\IITH_GPT\IITH-GPT\index_tracker.json"
-    query_text = "Name the departments which are there in IITH for engineering?"
+    query_text = "NIRF ranking of IITH?"
     top_k = 5
-    huggingface_api_key = "YOUR API KEY"  # Replace with your API key
+    huggingface_api_key = "YOUR HUGGING FACE API KEY"  # Replace with your API key
 
     # Load SentenceTransformer model
     model = SentenceTransformer('all-MiniLM-L6-v2')
@@ -140,4 +140,3 @@ def main_pipeline():
 # Execute the pipeline
 if __name__ == "__main__":
     main_pipeline()
-
