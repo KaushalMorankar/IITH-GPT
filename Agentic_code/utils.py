@@ -48,10 +48,7 @@ def classify_query_with_gemini(query):
         response.raise_for_status()
         result = response.json()
 
-        # Extract the classification result
-        classification = result.get("contents", [{}])[0].get("parts", [{}])[0].get("text", "").strip().lower()
-        print(f"Predicted class: {classification}")
-        return classification
+        return result
 
     except requests.exceptions.RequestException as e:
         print(f"Error communicating with Gemini API: {e}")

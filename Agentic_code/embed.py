@@ -47,19 +47,19 @@ def processjson(json_file, index, metadata):
         combined_embedding = (
             1.2 * file_embedding.cpu().numpy() + 
             1.2 * title_embedding_flat + 
-            1.1 * sum(section_embeddings_flat)  
-        ) / (2.4 + 1.1 * len(section_embeddings_flat))
+            1 * sum(section_embeddings_flat)  
+        ) / (2.4 + len(section_embeddings_flat))
 
         index.add(combined_embedding.reshape(1, -1)) 
         
         metadata.append({
-            "title_1":name_without_extension,
+            "main":name_without_extension,
             "title": title,
             "sections": sections
         })
 
-directory_path = r'D:\pytorch_projects+tensorflow_projects_3.12\IITH_GPT\IITH-GPT\data'
-output_directory = r'D:\pytorch_projects+tensorflow_projects_3.12\IITH_GPT\IITH-GPT\output_multilevel_index'
+directory_path = '../data'
+output_directory = '../output_multilevel_index'
 
 os.makedirs(output_directory, exist_ok=True)
 
