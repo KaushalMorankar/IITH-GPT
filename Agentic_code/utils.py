@@ -3,7 +3,7 @@ from llama_index.core.llms import ChatMessage, MessageRole
 
 # Define Gemini API endpoint and API key
 GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
-GEMINI_API_KEY = "AIzaSyAE9uat1s7n2zquCWe5k_vwe_pC_oGNVP8"
+GEMINI_API_KEY = "gemini key"
 
 def classify_query_with_gemini(query):
     """
