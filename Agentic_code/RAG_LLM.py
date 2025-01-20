@@ -12,25 +12,53 @@ from langchain_core.messages import HumanMessage
 import torch
 from langchain_ollama import OllamaLLM
 import os
-# from tavily import TavilyClient
+from tavily import TavilyClient
 from langgraph.prebuilt import create_react_agent
-from langgraph.checkpoint.memory import MemorySaver
+# from langgraph.checkpoint.memory import MemorySaver
 import os
 import torch
 from utils import classify_query_with_gemini
+from prompts import summarize, question_answering, fact_verification, search, exploration
+
+class MemorySaver:
+    def __init__(self):
+        self.memory = {}
+
+    def save(self, key, value):
+        """Save a value with the specified key."""
+        self.memory[key] = value
+
+    def get(self, key):
+        """Retrieve a value by its key."""
+        return self.memory.get(key, None)
+
+    def exists(self, key):
+        """Check if a key exists in memory."""
+        return key in self.memory
+
+
 # Tavily search tool setup
-# tavily_api_key = "Your tavily api key"
-# hf_token = "your hf token"
-# if not os.environ.get('TAVILY_API_KEY'):
-#     os.environ['TAVILY_API_KEY'] = tavily_api_key
+tavily_api_key = "tavily key"
+hf_token = "hf _ token"
+if not os.environ.get('TAVILY_API_KEY'):
+    os.environ['TAVILY_API_KEY'] = tavily_api_key
 
-# if not os.environ.get('HF_TOKEN'):
-#     os.environ['HF_TOKEN'] = hf_token
+if not os.environ.get('HF_TOKEN'):
+    os.environ['HF_TOKEN'] = hf_token
 
-# tavily = TavilyClient(tavily_api_key)
+tavily = TavilyClient(tavily_api_key)
+
+if not os.environ.get('AUTOGEN_USE_DOCKER'):
+    os.environ['AUTOGEN_USE_DOCKER'] = '0'
+
+google_api_key = "google api key"
+if not os.environ.get('GOOGLE_API_KEY'):
+    os.environ['GOOGLE_API_KEY'] = google_api_key
+
+tavily = TavilyClient(tavily_api_key)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-login(token="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")
+login(token="hf_token")
 LANGUAGE = "english"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
@@ -45,9 +73,9 @@ model = SentenceTransformer('all-MiniLM-L6-v2')
 model.to(device)
 
 
-# tavily = TavilyClient(tavily_api_key)
-# search = TavilySearchResults(max_results=2) 
-# tools = [search]  
+tavily = TavilyClient(tavily_api_key)
+search = TavilySearchResults(max_results=2) 
+tools = [search]  
 
 # agent_executor = create_react_agent(model, tools)
 # agent_executor_with_memory = create_react_agent(model, tools, checkpointer=memory)
@@ -71,7 +99,10 @@ def execute_task(model, tools, user_query):
         combined_query += f"{i}. {result}\n"
     
     response = model.generate(prompts=[combined_query])
-    memory = MemorySaver()  # Add memory for tracking interactions
+    memory = MemorySaver()
+    # Save user query and model response
+    memory.save("user_query", user_query)
+    memory.save("response", response.generations[0][0].text)
 
     return response.generations[0][0].text  
 
@@ -91,54 +122,49 @@ def retrieve_documents_from_faiss(index, query_embedding, metadata, top_k=5):
 
 def generate_subqueries(user_query, ollama_model):
     prompt = (
-        """Query: {user_query}\n\n
-        You are an expert at understanding and correlating user queries. If the query consists of distinct sub-questions, and a clear distinction is observed, you can break it down into meaningful and logically separate sub-questions if and only if necessary. Do not alter the  contents of the query itself, only minor reframes of grammar are allowed.
-        
+        """Query: {user_query}
+
+        You are an expert at understanding and correlating user queries. If the query consists of distinct sub-questions, and a clear distinction is observed, break it down into meaningful and logically separate sub-questions **only if necessary.** Otherwise, retain the query as is. **If the query is already a complete and meaningful statement, return it without changes.** Minor grammatical adjustments are allowed if required.
+
         Guidelines:
-        1. Verify whether the query contains vocabulary that is all related and is a valid question in itself. If it is, return the query itself without any modifications.
-        2. Do not split names or entities unnecessarily.
-        3. Maintain the context of the original question in the sub-questions.
-        4. Provide only the sub-questions without any additional text or explanations.
-        
-        ### Example 1:
-        Input: "What is the QS and NIRF ranking of IITH?"
-        Output:
-        - "What is the QS ranking of IITH?"
-        - "What is the NIRF ranking of IITH?"
-        
-        ### Example 2:
-        Input: "Who are Pranjal Prajapati and Kaushal Morankar?"
-        Output:
-        - "Who is Pranjal Prajapati?"
-        - "Who is Kaushal Morankar?"
-        
-        ### Example 3:
-        Input: "Explain the differences between QS and NIRF rankings."
-        Output:
-        - "What are QS rankings?"
-        - "What are NIRF rankings?"
-        - "What are the differences between QS and NIRF rankings?"
-        
-        ### Example 4:
-        Input: "Summarize the contributions of Mahatma Gandhi and Jawaharlal Nehru."
-        Output:
-        - "What are the contributions of Mahatma Gandhi?"
-        - "What are the contributions of Jawaharlal Nehru?"
+        1. **If the query is already a valid and complete question or statement, return it as is without splitting.**  
+        2. **Break down the query only when it contains multiple, distinct parts that can stand alone as sub-questions.**  
+        3. **Maintain the original intent and context of the query when creating sub-questions.**  
+        4. **Provide only the output without any additional explanations or comments.**  
 
-        ### Example 5:
-        Input: "Who is Rajesh Kedia?"
-        Output:
-        - "Who is Rajesh Kedia?"
+        ### Example 1:  
+        **Input:** "What is the QS and NIRF ranking of IITH?"  
+        **Output:**  
+        - "What is the QS ranking of IITH?"  
+        - "What is the NIRF ranking of IITH?"  
 
-        ### Example 6:
-        Input: "What is Lambda IITH?"
+        ### Example 2:  
+        **Input:** "Summarize about IIT."  
+        **Output:**  
+        - "Summarize about IIT."  
+
+        ### Example 3:  
+        **Input:** "Explain the differences between QS and NIRF rankings."  
+        **Output:**  
+        - "What are QS rankings?"  
+        - "What are NIRF rankings?"  
+        - "What are the differences between QS and NIRF rankings?"  
+
+        ### Example 4:  
+        **Input:** "Who is Rajesh Kedia?"  
+        **Output:**  
+        - "Who is Rajesh Kedia?"  
+
+        ### Example 5:  
+        **Input:** "What is Lambda IITH?"  
+        **Output:**  
+        - "What is Lambda IITH?"  
+
+        Query: {user_query}  
         Output:
-        - "What is Lambda IITH?"
-        
-        Query: {user_query}
-        Output:"""
+        """
     )
-    print("Query type: ",classify_query_with_gemini(user_query))
+    # print("Query type: ",classify_query_with_gemini(user_query))
 
     formatted_prompt = prompt.format(user_query=user_query)
     response = ollama_model.invoke(formatted_prompt)
@@ -212,7 +238,7 @@ def validate_relevance(subquery, retrieved_docs, llm):
             "Only provide the response, no additional text."
         )
         response = llm.invoke(prompt).strip()
-        if response.lower() != "not relevant":
+        if response.lower() == "relevant":
             return True
     return False
 
@@ -233,26 +259,61 @@ def process_query_with_validation(query, index, metadata, ollama_model, embedder
     Returns:
         Final response generated by the LLM.
     """
+    memory = MemorySaver()
+
+    # Check if the main query or any subqueries already exist in memory
+    if memory.exists(query):
+        stored_response = memory.load(query)
+        print("Retrieved Response from Memory:")
+        print(stored_response)
+        return stored_response
     subqueries = generate_subqueries(query, ollama_model)
-    print("Subqueries:", subqueries)
+    # print("Subqueries:", subqueries)
     retrieved_context = []
 
     for subquery in subqueries:
         query_embedding = embedder.encode([subquery], device=device).flatten()
-
-        retrieved_docs = retrieve_documents_from_faiss(index, query_embedding, metadata, top_k)
-        is_relevant = validate_relevance(subquery, retrieved_docs, ollama_model)
-        # Fallback logic
-        if not is_relevant:
-            print(f"Subquery '{subquery}' documents not relevant, retrying...")
-            
-            retrieved_docs = retrieve_documents_from_faiss(index, query_embedding, metadata, top_k * 2)
+        query_type = classify_query_with_gemini(subquery)
+        if memory.exists(subquery):
+            print(f"Retrieved stored response for subquery: {subquery}")
+            retrieved_docs = memory.load(subquery)
+        else:
+            if query_type == "summarization":
+                # Retrieve more documents for comprehensive coverage
+                top_k = 10
+            elif query_type == "question_answering":
+                # Focus on precise and concise documents
+                top_k = 5
+            elif query_type == "search":
+                # Balance between precision and coverage
+                top_k = 7
+            elif query_type == "fact_verification":
+                # Retrieve documents explicitly supporting or refuting the fact
+                top_k = 8
+            elif query_type == "exploration":
+                # Retrieve a wide variety of documents for broader coverage
+                top_k = 30
+            # elif query_type == "comparison":
+            #     # Retrieve a wide variety of documents for broader coverage
+            #     top_k = 10
+            else:
+                # Fallback logic for unknown query types
+                top_k = 5
+            retrieved_docs = retrieve_documents_from_faiss(index, query_embedding, metadata, top_k)
             is_relevant = validate_relevance(subquery, retrieved_docs, ollama_model)
-            # # Final fallback to Tavily if still not relevant
-            # if not is_relevant:
-            #     print(f"Subquery '{subquery}' failed validation. Performing Tavily search...")
-            #     tavily_search = TavilySearchResults(max_results=2)
-            #     retrieved_docs = [{"doc": result} for result in tavily_search.run(subquery)]
+            # print(retrieved_docs)
+            # Fallback logic
+            if not is_relevant:
+                print(f"Subquery '{subquery}' documents not relevant, retrying...")
+                
+                retrieved_docs = retrieve_documents_from_faiss(index, query_embedding, metadata, top_k * 2)
+                is_relevant = validate_relevance(subquery, retrieved_docs, ollama_model)
+                # # Final fallback to Tavily if still not relevant
+                # if not is_relevant:
+                #     print(f"Subquery '{subquery}' failed validation. Performing Tavily search...")
+                #     tavily_search = TavilySearchResults(max_results=2)
+                #     retrieved_docs = [{"doc": result} for result in tavily_search.run(subquery)]
+        memory.save(subquery, retrieved_docs)
 
         retrieved_context.append({
             "subquery": subquery,
@@ -265,22 +326,38 @@ def process_query_with_validation(query, index, metadata, ollama_model, embedder
     )
 
     prompt = (
-        "You are tasked with answering the following subqueries based on the provided context:\n\n"
-        f"Query: {query}\n\n"
+        "You are an intelligent AI assistant. You will be provided with a user query divided into subqueries and a context. Your task is to generate proper response for the subqueries provided with the context(documents retrived) and answer as a whole together.\n\n"
+        "Remeber, the context is set in the domain of Indian Institute of Technology Hyderabad (IITH). Hence the persons or the queries are related to IITH only.\n\n"
+        f"Original Query: {query}\n\n"
+        f"Subqueries: {', '.join(subqueries)}\n\n"
         f"Context:\n{combined_context}\n\n"
         "Guidelines:\n"
-        "1. Provide direct and concise answers combining all relevant aspects related to the query. Do not miss important surrounding context.\n"
+        "1. Provide direct and concise answers while combining all relevant aspects related to the query.\n"
         "2. Maintain a professional tone.\n"
-        "3. Address each and every subquery comprehensively.\n"
+        "3. Address each subquery comprehensively without omitting details.\n"
+        "4. Provide precise and accurate responses, ensuring that only relevant information directly related to the query is included.\n"
+        "5. Based on the score provided in the context, provide the answer to the query. Dont include the scores in the response\n"
     )
-    final_response = ollama_model.invoke(prompt)
+    if query_type == "summarization":
+        final_response = ollama_model.invoke(summarize.format(user_query=query, context=combined_context, subqueries=subqueries))
+    elif query_type == "question_answering":
+        final_response = ollama_model.invoke(question_answering.format(user_query=query, context=combined_context, subqueries=subqueries))
+    elif query_type == "search":
+        final_response = ollama_model.invoke(search.format(user_query=query, context=combined_context, subqueries=subqueries))
+    elif query_type == "fact_verification":
+        final_response = ollama_model.invoke(fact_verification.format(user_query=query, context=combined_context, subqueries=subqueries))
+    elif query_type == "exploration":
+        final_response = ollama_model.invoke(exploration.format(user_query=query, context=combined_context, subqueries=subqueries))
+    else:
+        final_response = ollama_model.invoke(prompt)
     is_relevant_llmresp = validate_relevance_llmresp(query, final_response, ollama_model)
-    while not is_relevant_llmresp:
-            print(f"Final response '{final_response}' response not relevant, retrying...")
-            
-            # Retry retrieval with increased top_k
-            final_response = ollama_model.invoke(prompt)
-            is_relevant_llmresp = validate_relevance_llmresp(query, final_response, ollama_model)
+    retry_count = 0
+    max_retries = 3
+    while not is_relevant_llmresp and retry_count < max_retries:
+        print(f"Final response not relevant, retrying... Attempt {retry_count + 1}")
+        final_response = ollama_model.invoke(prompt)
+        is_relevant_llmresp = validate_relevance_llmresp(query, final_response, ollama_model)
+        retry_count += 1
 
     return final_response.strip()
     # query_embedding = embedder.encode([query], device=device).flatten()
@@ -310,8 +387,8 @@ def process_query_with_validation(query, index, metadata, ollama_model, embedder
     # # Assuming 'response' is a string-like object
     # return response.strip()
 
-index_path = '../output_multilevel_index/faiss_index.index'
-metadata_path = '../output_multilevel_index/metadata.json'
+index_path = r'D:\pytorch_projects+tensorflow_projects_3.12\IITH_GPT\IITH-GPT\output_multilevel_index\faiss_index.index'
+metadata_path = r'D:\pytorch_projects+tensorflow_projects_3.12\IITH_GPT\IITH-GPT\output_multilevel_index\metadata.json'
 
 index = load_faiss_index(index_path)
 with open(metadata_path, "r", encoding="utf-8") as metadata_file:
