@@ -9,9 +9,14 @@ from transformers import T5Tokenizer, T5ForConditionalGeneration
 from sentence_transformers import SentenceTransformer
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_core.messages import HumanMessage
+from transformers import AutoTokenizer
 import torch
 from langchain_ollama import OllamaLLM
 import os
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"  # Allow duplicate OpenMP libraries
+os.environ["OMP_NUM_THREADS"] = "1"  # Limit to 1 thread to avoid conflicts
+
+
 from tavily import TavilyClient
 from langgraph.prebuilt import create_react_agent
 # from langgraph.checkpoint.memory import MemorySaver
@@ -19,6 +24,7 @@ import os
 import torch
 from utils import classify_query_with_gemini
 from prompts import summarize, question_answering, fact_verification, search, exploration
+# from lsa import clustered_rag_lsa, summarize_it
 
 class MemorySaver:
     def __init__(self):
@@ -38,8 +44,8 @@ class MemorySaver:
 
 
 # Tavily search tool setup
-tavily_api_key = "tavily key"
-hf_token = "hf _ token"
+tavily_api_key = "key"
+hf_token = "key"
 if not os.environ.get('TAVILY_API_KEY'):
     os.environ['TAVILY_API_KEY'] = tavily_api_key
 
@@ -51,14 +57,14 @@ tavily = TavilyClient(tavily_api_key)
 if not os.environ.get('AUTOGEN_USE_DOCKER'):
     os.environ['AUTOGEN_USE_DOCKER'] = '0'
 
-google_api_key = "google api key"
+google_api_key = "key"
 if not os.environ.get('GOOGLE_API_KEY'):
     os.environ['GOOGLE_API_KEY'] = google_api_key
 
 tavily = TavilyClient(tavily_api_key)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-login(token="hf_token")
+login(token="token")
 LANGUAGE = "english"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
@@ -72,6 +78,9 @@ else:
 model = SentenceTransformer('all-MiniLM-L6-v2')
 model.to(device)
 
+
+# Load a tokenizer (for example, BERT tokenizer)
+hf_tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
 
 tavily = TavilyClient(tavily_api_key)
 search = TavilySearchResults(max_results=2) 
@@ -109,7 +118,7 @@ def execute_task(model, tools, user_query):
 def load_faiss_index(index_path):
     return faiss.read_index(index_path)
 
-def retrieve_documents_from_faiss(index, query_embedding, metadata, top_k=5):
+def retrieve_documents_from_faiss(index, query_embedding, metadata, top_k):
     """Retrieve top-k documents using FAISS."""
     query_embedding = query_embedding.reshape(1, -1) 
     distances, indices = index.search(query_embedding, top_k)
@@ -280,19 +289,19 @@ def process_query_with_validation(query, index, metadata, ollama_model, embedder
         else:
             if query_type == "summarization":
                 # Retrieve more documents for comprehensive coverage
-                top_k = 10
+                top_k = 20
             elif query_type == "question_answering":
                 # Focus on precise and concise documents
                 top_k = 5
             elif query_type == "search":
                 # Balance between precision and coverage
-                top_k = 7
+                top_k = 10
             elif query_type == "fact_verification":
                 # Retrieve documents explicitly supporting or refuting the fact
                 top_k = 8
             elif query_type == "exploration":
                 # Retrieve a wide variety of documents for broader coverage
-                top_k = 30
+                top_k = 15
             # elif query_type == "comparison":
             #     # Retrieve a wide variety of documents for broader coverage
             #     top_k = 10
@@ -341,12 +350,18 @@ def process_query_with_validation(query, index, metadata, ollama_model, embedder
     if query_type == "summarization":
         final_response = ollama_model.invoke(summarize.format(user_query=query, context=combined_context, subqueries=subqueries))
     elif query_type == "question_answering":
-        final_response = ollama_model.invoke(question_answering.format(user_query=query, context=combined_context, subqueries=subqueries))
+        # print("question answer query detected. Truncating context for exploration...")
+        # truncated_context = clustered_rag_lsa(embedder, combined_context, num_clusters=5, sentences_count=5)
+        final_response = ollama_model.invoke(exploration.format(user_query=query, context=combined_context, subqueries=subqueries))
     elif query_type == "search":
-        final_response = ollama_model.invoke(search.format(user_query=query, context=combined_context, subqueries=subqueries))
+        # print("Search query detected. Truncating context for exploration...")
+        # truncated_context = clustered_rag_lsa(embedder, combined_context, num_clusters=5, sentences_count=5)
+        final_response = ollama_model.invoke(exploration.format(user_query=query, context=combined_context, subqueries=subqueries))
     elif query_type == "fact_verification":
         final_response = ollama_model.invoke(fact_verification.format(user_query=query, context=combined_context, subqueries=subqueries))
     elif query_type == "exploration":
+        # print("Exploration query detected. Truncating context for exploration...")
+        # truncated_context = clustered_rag_lsa(embedder, combined_context, num_clusters=5, sentences_count=5)
         final_response = ollama_model.invoke(exploration.format(user_query=query, context=combined_context, subqueries=subqueries))
     else:
         final_response = ollama_model.invoke(prompt)
