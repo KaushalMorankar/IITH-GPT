@@ -25,6 +25,7 @@ def classify_query_with_gemini(query):
                         - 'search'
                         - 'fact_verification'
                         - 'exploration'
+                        - 'math'
 
                         Query: {query}
 
@@ -39,6 +40,10 @@ def classify_query_with_gemini(query):
                            Output: fact_verification
                         5. Explore the history of space exploration.
                            Output: exploration
+                        6. 3+5*2
+                           Output: math
+                        7. add 3 and 5
+                           Output: math
                         """
                     }
                 ]
@@ -81,3 +86,49 @@ def summarize_history(summarizer, messages):
     chunks = chunk_text(history_text, chunk_size=1000)  # Use an optimized chunk size
     summaries = [summarizer(chunk, max_length=150, min_length=50, do_sample=False)[0]['summary_text'] for chunk in chunks]
     return " ".join(summaries)
+
+
+import re
+
+def do_math(expression: str) -> str:
+    """
+    Evaluates a mathematical expression following BODMAS rule.
+    
+    Parameters:
+        expression (str): A string representing the math expression (e.g., '3 + 5 * 2')
+    
+    Returns:
+        str: The result of the evaluation or an error message.
+    """
+    try:
+        # Remove any unwanted characters (allow only numbers, operators, and spaces)
+        sanitized_expr = re.sub(r'[^0-9+\-*/(). ]', '', expression)
+        
+        # Evaluate the expression following BODMAS rules using Python's eval
+        result = eval(sanitized_expr)
+        
+        return str(result)
+    except ZeroDivisionError:
+        return "Error: Division by zero"
+    except Exception as e:
+        return f"Error: Invalid expression ({str(e)})"
+
+
+# JSON Schema for Ollama Integration
+function_schema = {
+    "type": "function",
+    "function": {
+        "name": "do_math",
+        "description": "Evaluates mathematical expressions following BODMAS rules",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "expression": {
+                    "type": "string",
+                    "description": "The mathematical expression to evaluate (e.g., '3 + 5 * 2')"
+                }
+            },
+            "required": ["expression"]
+        }
+    }
+}
