@@ -1,9 +1,15 @@
 import requests
 from llama_index.core.llms import ChatMessage, MessageRole
+import os
+from dotenv import load_dotenv
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent  # Moves up to root
+load_dotenv(BASE_DIR / ".env")
 
 # Define Gemini API endpoint and API key
 GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
-GEMINI_API_KEY = "AIzaSyAE9uat1s7n2zquCWe5k_vwe_pC_oGNVP8"
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 def classify_query_with_gemini(query):
     """

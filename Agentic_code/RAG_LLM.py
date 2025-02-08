@@ -13,17 +13,21 @@ from transformers import AutoTokenizer
 import torch
 from langchain_ollama import OllamaLLM
 import os
+from dotenv import load_dotenv
+from pathlib import Path
+
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"  # Allow duplicate OpenMP libraries
 os.environ["OMP_NUM_THREADS"] = "1"  # Limit to 1 thread to avoid conflicts
 
+BASE_DIR = Path(__file__).resolve().parent.parent  # Moves up to root
+dotenv_path = BASE_DIR / ".env"
+load_dotenv(dotenv_path)
 
 from tavily import TavilyClient
-from langgraph.prebuilt import create_react_agent
 # from langgraph.checkpoint.memory import MemorySaver
-import os
 import torch
 from utils import classify_query_with_gemini
-from prompts import summarize, question_answering, fact_verification, search, exploration
+from prompts import summarize, fact_verification, search, exploration
 # from lsa import clustered_rag_lsa, summarize_it
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
@@ -61,27 +65,21 @@ class MemorySaver:
 # Example usage
 memory_store = MemorySaver()
 
-tavily_api_key = "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"
-hf_token = "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"
-if not os.environ.get('TAVILY_API_KEY'):
-    os.environ['TAVILY_API_KEY'] = tavily_api_key
-
-if not os.environ.get('HF_TOKEN'):
-    os.environ['HF_TOKEN'] = hf_token
-
-tavily = TavilyClient(tavily_api_key)
+# Tavily search tool setup
+tavily_api_key = os.getenv('TAVILY_API_KEY')
+hf_token = os.getenv('HF_TOKEN')
+tavily = TavilyClient(api_key=tavily_api_key)
 
 if not os.environ.get('AUTOGEN_USE_DOCKER'):
     os.environ['AUTOGEN_USE_DOCKER'] = '0'
 
-google_api_key = "5db12bc561755d5cb4a83746dd005602f103ccce"
-if not os.environ.get('GOOGLE_API_KEY'):
-    os.environ['GOOGLE_API_KEY'] = google_api_key
+# if not os.environ.get('GOOGLE_API_KEY'):
+#     os.environ['GOOGLE_API_KEY'] = google_api_key
 
 tavily = TavilyClient(tavily_api_key)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-login(token="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")
+login(token=hf_token)
 LANGUAGE = "english"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
@@ -101,7 +99,7 @@ hf_tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
 
 tavily = TavilyClient(tavily_api_key)
 search = TavilySearchResults(max_results=2) 
-tools = [search]  
+tools = [search]
 
 # agent_executor = create_react_agent(model, tools)
 # agent_executor_with_memory = create_react_agent(model, tools, checkpointer=memory)
@@ -129,8 +127,6 @@ def execute_task(model, tools, user_query):
 
 def load_faiss_index(index_path):
     return faiss.read_index(index_path)
-
-import numpy as np
 
 def retrieve_documents_with_memory(index, query_embedding, memory_store, metadata, top_k):
     """
@@ -371,16 +367,16 @@ def process_query_with_validation(query, index, metadata, ollama_model, embedder
 
     prompt = (
         "You are an intelligent AI assistant. You will be provided with a user query divided into subqueries and a context. Your task is to generate proper response for the subqueries provided with the context(documents retrived) and answer as a whole together.\n\n"
-        "Remeber, the context is set in the domain of Indian Institute of Technology Hyderabad (IITH). Hence the persons or the queries are related to IITH only.\n\n"
+        "Remember, the context is set in the domain of Indian Institute of Technology Hyderabad (IITH).\n\n"
         f"Original Query: {query}\n\n"
         f"Subqueries: {', '.join(subqueries)}\n\n"
         f"Context:\n{combined_context}\n\n"
         "Guidelines:\n"
-        "1. Provide direct and concise answers while combining all relevant aspects related to the query.\n"
-        "2. Maintain a professional tone.\n"
-        "3. Address each subquery comprehensively without omitting details.\n"
-        "4. Provide precise and accurate responses, ensuring that only relevant information directly related to the query is included.\n"
-        "5. Based on the score provided in the context, provide the answer to the query. Dont include the scores in the response\n"
+        "1. Carefully analyse both the query and the context that has been provided to you. Do not lose relevant information while generating the response.\n"
+        "2. Provide direct and concise answers while combining all relevant aspects related to the query.\n"
+        "3. Maintain a professional tone and do not mention the reasonings behind which you chose the content, only the content itself in a informative manner.\n"
+        "4. Address each subquery comprehensively without omitting details.\n"
+        "5. Provide precise and accurate responses, ensuring that only relevant information directly related to the query is included.\n"
     )
     if query_type == "summarization":
         final_response = ollama_model.invoke(summarize.format(user_query=query, context=combined_context, subqueries=subqueries))
